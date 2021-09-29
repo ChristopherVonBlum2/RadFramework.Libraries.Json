@@ -13,6 +13,18 @@ namespace JsonParser
             entries = new Lazy<List<object>>(() => ParseArray(jsonArray));
         }
 
+        public object this[int index]
+        {
+            get
+            {
+                return entries.Value[index];
+            }
+            set
+            {
+                entries.Value[index] = value;
+            }
+        }
+
         public IEnumerator<object> GetEnumerator()
         {
             return entries.Value.GetEnumerator();

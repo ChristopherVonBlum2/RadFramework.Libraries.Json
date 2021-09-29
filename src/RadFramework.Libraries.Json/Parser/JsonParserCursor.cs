@@ -33,6 +33,8 @@ namespace JsonParser
         
         public void SkipObjectOrArray()
         {
+            char currentChar = CurrentChar;
+            
             if (!(CurrentChar.Equals('{') || CurrentChar.Equals('[')))
             {
                 throw new ParserBugException("Expected char is { or [");
@@ -42,19 +44,21 @@ namespace JsonParser
             
             do
             {
-                if (CurrentChar.Equals('{') || CurrentChar.Equals('['))
+                currentChar = CurrentChar;
+                
+                if (currentChar.Equals('{') || currentChar.Equals('['))
                 {
                     nesting++;
                 }
-                else if (CurrentChar.Equals('}') || CurrentChar.Equals(']'))
+                else if (currentChar.Equals('}') || currentChar.Equals(']'))
                 {
                     nesting--;
                 }
-                else if (CurrentChar.Equals('\"'))
+                else if (currentChar.Equals('\"'))
                 {
                     SkipString();
                 }
-                else if (CurrentChar.Equals(' '))
+                else if (currentChar.Equals(' '))
                 {
                     SkipWhitespacesAndNewlines();
                     continue;
@@ -67,9 +71,12 @@ namespace JsonParser
         
         public void SkipWhitespacesAndNewlines()
         {
-            while (CurrentChar.Equals(' ') || CurrentChar.Equals('\n') || CurrentChar.Equals('\r'))
+            char currentChar = CurrentChar;
+            
+            while (currentChar.Equals(' ') || currentChar.Equals('\n') || currentChar.Equals('\r'))
             {
                 Index++;
+                currentChar = CurrentChar;
             }
         }
         
@@ -86,8 +93,7 @@ namespace JsonParser
             
             while(true)
             {
-                if (CurrentChar == '"' 
-                    && (Index != 0 && Json[Index - 1] != '\\'))
+                if (IsStringEnd())
                 {
                     break;
                 }
@@ -101,7 +107,7 @@ namespace JsonParser
 
             return builder.ToString();
         }
-        
+
         public void SkipString()
         {
             if (!CurrentChar.Equals('"'))
@@ -114,8 +120,7 @@ namespace JsonParser
             
             while(true)
             {
-                if (CurrentChar == '"' 
-                    && (Index != 0 && Json[Index - 1] != '\\'))
+                if (IsStringEnd())
                 {
                     break;
                 }
@@ -124,6 +129,12 @@ namespace JsonParser
             }
             
             Index++;
+        }
+        
+        private bool IsStringEnd()
+        {
+            return CurrentChar == '"' 
+                   && (Index != 0 && Json[Index - 1] != '\\');
         }
     }
 }

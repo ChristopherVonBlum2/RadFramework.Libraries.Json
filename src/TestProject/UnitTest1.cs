@@ -61,6 +61,5 @@ namespace TestProject
             Assert.IsTrue(((string)((JsonObject)entries[1])["prop1"]) == "test prop1");
             Assert.IsTrue(((string)((JsonArray)entries[2])[0]) == "test in inner array");
         }
-        
     }
 }

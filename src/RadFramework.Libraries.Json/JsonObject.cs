@@ -100,7 +100,7 @@ namespace JsonParser
             
             if (type == JsonTypes.String)
             {
-                // skip the leading control char of the string
+                // skip the leading " of the string
                 cursor.Index++;
                 
                 // skip everything until we reach the end of the string ignore escaped "

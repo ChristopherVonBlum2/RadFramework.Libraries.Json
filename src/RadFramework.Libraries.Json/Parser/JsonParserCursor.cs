@@ -35,7 +35,7 @@ namespace JsonParser
         {
             char currentChar = CurrentChar;
             
-            if (!(CurrentChar.Equals('{') || CurrentChar.Equals('[')))
+            if (!(currentChar.Equals('{') || currentChar.Equals('[')))
             {
                 throw new ParserBugException("Expected char is { or [");
             }
